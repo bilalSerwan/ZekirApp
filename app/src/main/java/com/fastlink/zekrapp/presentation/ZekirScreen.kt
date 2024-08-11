@@ -1,12 +1,11 @@
 package com.fastlink.zekrapp.presentation
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -45,46 +45,33 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-@SuppressLint("UnrememberedMutableInteractionSource")
+@SuppressLint(
+    "UnrememberedMutableInteractionSource", "CoroutineCreationDuringComposition",
+    "ShowToast"
+)
 @Composable
 fun ZekirScreen(categoryId: Int) {
+
+    val context = LocalContext.current
     val clipboardManager = LocalClipboardManager.current
-    val viewmodel = LocalViewModel.current
+    val viewModel = LocalViewModel.current
     val scope = rememberCoroutineScope()
-    val category = viewmodel.getCategoryById(categoryId)
-    val zekirs = viewmodel.getZekirByCategoryId(category.id)
+    val category = viewModel.getCategoryById(categoryId)
+    val zekirs = viewModel.getZekirByCategoryId(category.id)
     val zekirNumber = remember {
         mutableIntStateOf(0)
     }
     val zekirCounter = remember {
         mutableIntStateOf(0)
     }
-
-    fun onClicked() {
-        Log.d("ZekirScreen", "zekirCounter: ${zekirCounter.intValue}")
-        Log.d("ZekirScreen", "zekirNumber: ${zekirNumber.intValue}")
-        if (zekirCounter.intValue < zekirs[zekirNumber.intValue].counterNumber) {
-            zekirCounter.intValue++
-            Log.d(
-                "ZekirScreen",
-                "equal: ${zekirCounter.intValue == zekirs[zekirNumber.intValue].counterNumber}"
-            )
-            if (zekirCounter.intValue == zekirs[zekirNumber.intValue].counterNumber) {
-                scope.launch {
-                    delay(1500)
-                    if (zekirNumber.intValue < zekirs.size - 1) {
-                        zekirCounter.intValue = 0
-                    }
-                    Log.d("ZekirScreen", "after if zekirCounter: ${zekirCounter.intValue}")
-                    if (zekirNumber.intValue < zekirs.size - 1) {
-                        zekirNumber.intValue++
-                    }
-                }
-            }
+    if (zekirNumber.intValue == 0)
+        scope.launch {
+            Toast.makeText(
+                context,
+                " الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}",
+                Toast.LENGTH_SHORT,
+            ).show()
         }
-        Log.d("ZekirScreen", "after if zekirNumber: ${zekirNumber.intValue}")
-    }
-
     val animatedBorder by animateFloatAsState(
         targetValue =
         (zekirCounter.intValue.toFloat() / zekirs[zekirNumber.intValue].counterNumber.toFloat()) * 360f,
@@ -92,13 +79,34 @@ fun ZekirScreen(categoryId: Int) {
         animationSpec = tween(1000)
     )
 
+    fun onClicked() {
+        if (zekirCounter.intValue < zekirs[zekirNumber.intValue].counterNumber) {
+            zekirCounter.intValue++
+            if (zekirCounter.intValue == zekirs[zekirNumber.intValue].counterNumber) {
+                scope.launch {
+                    delay(1500)
+                    if (zekirNumber.intValue < zekirs.size - 1) {
+                        zekirCounter.intValue = 0
+                        zekirNumber.intValue++
+                        scope.launch {
+                            Toast.makeText(
+                                context,
+                                " الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             ZekirScreenAppBar(title = category.name)
         },
         floatingActionButton = {
             FloatingActionButton(
-                interactionSource = MutableInteractionSource(),
                 onClick = {
                     onClicked()
                 },
@@ -120,12 +128,14 @@ fun ZekirScreen(categoryId: Int) {
                 )
             }
         },
+
+
         isFloatingActionButtonDocked = true,
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
-            ZekirScreenBottomAppBar(category = category) {
-                clipboardManager.setText(AnnotatedString(zekirs[zekirNumber.intValue].description))
-            }
+            ZekirScreenBottomAppBar(category = category,
+                onCopyIconClicked = { clipboardManager.setText(AnnotatedString(zekirs[zekirNumber.intValue].description)) }
+            )
         }
     ) {
         Column(
@@ -133,9 +143,6 @@ fun ZekirScreen(categoryId: Int) {
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-//                .pointerInput(
-//                  add swipe gesture here
-//                )
                 .verticalScroll(
                     rememberScrollState()
                 )
@@ -171,10 +178,12 @@ fun ZekirScreen(categoryId: Int) {
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.titleMedium,
             )
-            Text(text ="(${ if (zekirs[zekirNumber.intValue].counter == "null") "مرة واحدة" else zekirs[zekirNumber.intValue].counter})",
+            Text(
+                text = "(${if (zekirs[zekirNumber.intValue].counter == "null") "مرة واحدة" else zekirs[zekirNumber.intValue].counter})",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
-                style = MaterialTheme.typography.bodyMedium)
+                style = MaterialTheme.typography.bodyMedium
+            )
             DashedDevider(
                 thickness = 1.1.dp,
                 color = MaterialTheme.colorScheme.primary,
@@ -194,3 +203,6 @@ fun ZekirScreen(categoryId: Int) {
     }
 
 }
+
+
+

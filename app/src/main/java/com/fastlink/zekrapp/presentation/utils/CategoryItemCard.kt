@@ -30,8 +30,6 @@ import com.fastlink.zekrapp.presentation.navigation.Screen
 
 @Composable
 fun CategoryItem(category: CategoryModel) {
-    Log.d("updateCategory", "recompose")
-
     val navController = LocalNavController.current
     val viewModel = LocalViewModel.current
     Surface(
@@ -55,17 +53,12 @@ fun CategoryItem(category: CategoryModel) {
             Icon(
                 imageVector = if (category.isFavorite) Icons.Default.Favorite
                 else Icons.Default.FavoriteBorder,
-                contentDescription = "favorite",
+                contentDescription = "Favorite",
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .padding(start = 20.dp)
                     .size(25.dp)
                     .clickable {
-                        Log.d(
-                            "updateCategory",
-                            "categoryId: ${category.id}, ${category.isFavorite}"
-                        )
-
                         viewModel.updateCategory(category.id, !category.isFavorite)
                     }
             )

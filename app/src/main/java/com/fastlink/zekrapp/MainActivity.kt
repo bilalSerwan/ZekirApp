@@ -57,8 +57,7 @@ fun MyApp() {
         == "${Screen.ZekirScreen.route}/{categoryId}"
     ) {
         Navigation()
-    }
-    else Scaffold(
+    } else Scaffold(
         topBar = {
             AppBar()
         },

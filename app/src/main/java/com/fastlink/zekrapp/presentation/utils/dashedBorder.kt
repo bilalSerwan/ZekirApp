@@ -44,22 +44,4 @@ fun Modifier.dashedBorder(
     )
 }
 
-@Composable
-fun Modifier.archBorder(
-    startAngle: Float = 0f,
-    borderColor : Color = MaterialTheme.colorScheme.primary,
-    animatedBorder : Float
-)= this.drawWithContent {
-    drawContent()
-    this.drawArc(
-        color =borderColor,
-        startAngle =startAngle-90f,
-        sweepAngle = animatedBorder,
-        useCenter = false,
-        style = Stroke(
-            width = 5.dp.toPx(),
-            miter = animatedBorder,
-            cap = StrokeCap.Round,
-        )
-    )
-}
+

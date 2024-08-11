@@ -1,6 +1,5 @@
 package com.fastlink.zekrapp.viewModel
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,6 +15,7 @@ class MainViewModel : ViewModel() {
         getZekrs()
         getCateories()
     }
+
     private var _categories = mutableStateOf(getAllCategories())
 
     val categories: State<List<CategoryModel>>
@@ -30,10 +30,6 @@ class MainViewModel : ViewModel() {
     }
 
     fun updateCategory(categoryId: Int, isFavorite: Boolean) {
-//        _categories = _categories.toMutableStateList().apply {
-//            find { it.id == categoryId }?.bookmarked = isFavorite
-//        }
-
         _categories.value = _categories.value.map { category ->
             if (category.id == categoryId) {
                 category.copy(isFavorite = isFavorite)

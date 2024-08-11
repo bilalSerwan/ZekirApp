@@ -1,4 +1,4 @@
-import com.fastlink.zekrapp.data.fakedata.categoryData
+import com.fastlink.zekrapp.data.data.categoryData
 import com.fastlink.zekrapp.data.model.CategoryModel
 
 val categoriesData = mutableListOf<CategoryModel>()

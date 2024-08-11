@@ -1,4 +1,4 @@
-import com.fastlink.zekrapp.data.fakedata.zikerData
+import com.fastlink.zekrapp.data.data.zikerData
 import com.fastlink.zekrapp.data.model.ZekrModel
 
 val zekrs = mutableListOf<ZekrModel>()
