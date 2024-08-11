@@ -13,7 +13,7 @@ data class ZekrModel(
 //    @ColumnInfo(name="hint")
     val hint: String,
 
-    val counter: String?,
+    val counter: String,
 //    @ColumnInfo(name="counter_number")
     val counterNumber: Int
 )

@@ -1,10 +1,12 @@
 package com.fastlink.zekrapp.presentation
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,6 +45,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun ZekirScreen(categoryId: Int) {
     val clipboardManager = LocalClipboardManager.current
@@ -95,6 +98,7 @@ fun ZekirScreen(categoryId: Int) {
         },
         floatingActionButton = {
             FloatingActionButton(
+                interactionSource = MutableInteractionSource(),
                 onClick = {
                     onClicked()
                 },
@@ -161,13 +165,16 @@ fun ZekirScreen(categoryId: Int) {
                 )
                 .padding(16.dp),
         ) {
-
             Text(
                 text = zekirs[zekirNumber.intValue].description,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.titleMedium,
             )
+            Text(text ="(${ if (zekirs[zekirNumber.intValue].counter == "null") "مرة واحدة" else zekirs[zekirNumber.intValue].counter})",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.End,
+                style = MaterialTheme.typography.bodyMedium)
             DashedDevider(
                 thickness = 1.1.dp,
                 color = MaterialTheme.colorScheme.primary,
