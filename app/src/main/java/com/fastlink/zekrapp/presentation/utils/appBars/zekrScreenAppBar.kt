@@ -2,7 +2,6 @@ package com.fastlink.zekrapp.presentation.utils.appBars
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -47,24 +46,20 @@ fun ZekirScreenAppBar(title: String) {
                 imageVector = Icons.Default.MoreVert, contentDescription = null,
                 modifier = Modifier
                     .padding(start = 15.dp, top = 5.dp)
-                    .clickable {
-
-                    },
+                    .clickable {},
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         },
-        modifier = Modifier
-            .height(70.dp)
-            .clip(
-                RoundedCornerShape(
-                    bottomStart = 20.dp,
-                    bottomEnd = 20.dp
-                ),
+        modifier = Modifier.clip(
+            RoundedCornerShape(
+                bottomStart = 20.dp,
+                bottomEnd = 20.dp
             ),
+        ),
         title = {
             Text(
                 text = title,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 1.dp),
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.titleLarge,

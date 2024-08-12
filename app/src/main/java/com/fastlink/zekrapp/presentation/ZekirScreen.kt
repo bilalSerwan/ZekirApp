@@ -1,6 +1,7 @@
 package com.fastlink.zekrapp.presentation
 
 import android.annotation.SuppressLint
+import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -22,6 +23,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.fastlink.zekrapp.LocalToast
 import com.fastlink.zekrapp.LocalViewModel
 import com.fastlink.zekrapp.presentation.utils.DashedDevider
 import com.fastlink.zekrapp.presentation.utils.appBars.ZekirScreenAppBar
@@ -51,8 +54,7 @@ import kotlinx.coroutines.launch
 )
 @Composable
 fun ZekirScreen(categoryId: Int) {
-
-    val context = LocalContext.current
+    val toast = LocalToast.current
     val clipboardManager = LocalClipboardManager.current
     val viewModel = LocalViewModel.current
     val scope = rememberCoroutineScope()
@@ -64,13 +66,8 @@ fun ZekirScreen(categoryId: Int) {
     val zekirCounter = remember {
         mutableIntStateOf(0)
     }
-    if (zekirNumber.intValue == 0)
-        scope.launch {
-            Toast.makeText(
-                context,
-                " الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}",
-                Toast.LENGTH_SHORT,
-            ).show()
+       LaunchedEffect(true){
+            toast(" الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}")
         }
     val animatedBorder by animateFloatAsState(
         targetValue =
@@ -88,12 +85,8 @@ fun ZekirScreen(categoryId: Int) {
                     if (zekirNumber.intValue < zekirs.size - 1) {
                         zekirCounter.intValue = 0
                         zekirNumber.intValue++
-                        scope.launch {
-                            Toast.makeText(
-                                context,
-                                " الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}",
-                                Toast.LENGTH_SHORT,
-                            ).show()
+                            scope.launch {
+                            toast(" الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}")
                         }
                     }
                 }

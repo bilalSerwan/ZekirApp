@@ -22,7 +22,7 @@ fun HomeScreen() {
     LazyColumn(
         modifier = modifier
             .padding(
-                top = 70.dp,
+                top = 90.dp,
                 bottom = 100.dp,
             )
             .background(MaterialTheme.colorScheme.background)
