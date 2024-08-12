@@ -12,17 +12,18 @@ import androidx.compose.ui.unit.Dp
 @Composable
 fun DashedDevider(
     thickness: Dp,
-    color : Color,
-    phase:Float=10f,
-    interval:FloatArray = floatArrayOf(10f,10f),
+    color: Color,
+    phase: Float = 10f,
+    interval: FloatArray = floatArrayOf(10f, 10f),
     modifier: Modifier
-){
+) {
     Canvas(modifier = modifier) {
         drawRoundRect(
             color = color,
             style = Stroke(
                 width = thickness.toPx(),
-                pathEffect = PathEffect.dashPathEffect(interval,phase))
+                pathEffect = PathEffect.dashPathEffect(interval, phase)
+            )
         )
     }
 }

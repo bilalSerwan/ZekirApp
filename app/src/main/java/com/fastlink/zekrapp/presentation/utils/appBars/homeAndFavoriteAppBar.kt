@@ -1,9 +1,7 @@
 package com.fastlink.zekrapp.presentation.utils.appBars
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -16,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fastlink.zekrapp.LocalNavController
 
@@ -31,7 +28,8 @@ fun AppBar() {
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
         ),
-        modifier = Modifier.heightIn(min = 70.dp, max=120.dp)
+        modifier = Modifier
+            .heightIn(min = 70.dp, max = 120.dp)
             .clip(
                 RoundedCornerShape(
                     bottomStart = 20.dp,

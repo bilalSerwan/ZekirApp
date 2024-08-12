@@ -37,14 +37,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ZekrAppTheme {
-                val toast:Toast= Toast.makeText(this, "", Toast.LENGTH_SHORT)
+                val toast: Toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
                 val navigation = rememberNavController()
                 val viewmodel: MainViewModel = viewModel()
                 CompositionLocalProvider(
                     LocalNavController provides navigation,
                     LocalViewModel provides viewmodel,
                     LocalModifier provides Modifier,
-                    LocalToast provides  { message ->
+                    LocalToast provides { message ->
                         showToast(toast, message)
                     }
                 ) {
@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
     private fun showToast(toast: Toast, message: String) {
         toast.setText(message)
         toast.setGravity(Gravity.BOTTOM, 0, 300)

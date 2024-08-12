@@ -59,7 +59,9 @@ fun ZekirScreenAppBar(title: String) {
         title = {
             Text(
                 text = title,
-                modifier = Modifier.fillMaxWidth().padding(bottom = 1.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 1.dp),
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.titleLarge,

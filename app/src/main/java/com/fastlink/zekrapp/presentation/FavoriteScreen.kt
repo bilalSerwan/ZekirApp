@@ -2,14 +2,17 @@ package com.fastlink.zekrapp.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fastlink.zekrapp.LocalModifier
 import com.fastlink.zekrapp.LocalViewModel
@@ -22,11 +25,27 @@ fun FavoriteScreen() {
     LazyColumn(
         modifier = modifier
             .padding(
-                top = 70.dp,
+                top = 90.dp,
                 bottom = 100.dp,
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        if (viewModel.getFavoriteCategories().isEmpty()) {
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .size(200.dp)
+                        .background(color = MaterialTheme.colorScheme.background)
+                )
+                Text(
+                    text = "No Favorite Categories Yet",
+                    Modifier.fillMaxWidth(),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
         items(viewModel.getFavoriteCategories()) { category ->
             CategoryItem(category = category)
         }

@@ -1,8 +1,6 @@
 package com.fastlink.zekrapp.presentation
 
 import android.annotation.SuppressLint
-import android.view.Gravity
-import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -33,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -66,9 +63,9 @@ fun ZekirScreen(categoryId: Int) {
     val zekirCounter = remember {
         mutableIntStateOf(0)
     }
-       LaunchedEffect(true){
-            toast(" الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}")
-        }
+    LaunchedEffect(true) {
+        toast(" الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}")
+    }
     val animatedBorder by animateFloatAsState(
         targetValue =
         (zekirCounter.intValue.toFloat() / zekirs[zekirNumber.intValue].counterNumber.toFloat()) * 360f,
@@ -85,7 +82,7 @@ fun ZekirScreen(categoryId: Int) {
                     if (zekirNumber.intValue < zekirs.size - 1) {
                         zekirCounter.intValue = 0
                         zekirNumber.intValue++
-                            scope.launch {
+                        scope.launch {
                             toast(" الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}")
                         }
                     }
@@ -107,7 +104,7 @@ fun ZekirScreen(categoryId: Int) {
                     defaultElevation = 10.dp,
                     pressedElevation = 10.dp,
                 ),
-                backgroundColor = MaterialTheme.colorScheme.surface,
+                backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 modifier = Modifier
                     .size(75.dp)
                     .clip(CircleShape)
@@ -117,7 +114,7 @@ fun ZekirScreen(categoryId: Int) {
                 Text(
                     text = zekirCounter.intValue.toString(),
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
         },
@@ -152,7 +149,7 @@ fun ZekirScreen(categoryId: Int) {
                     top = 20.dp
                 )
                 .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f))
+                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f))
                 .padding(12.dp)
                 .dashedBorder(
                     brush = Brush.linearGradient(

@@ -2,10 +2,10 @@ package com.fastlink.zekrapp.presentation.utils.bottomAppBar
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomAppBar
@@ -18,7 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -58,17 +57,19 @@ fun ZekirScreenBottomAppBar(
     val context = LocalContext.current
 
     BottomAppBar(
-        modifier = modifier
-            .padding(bottom = if (context.hasNavigationBar()) 40.dp else 0.dp),
-        cutoutShape = RoundedCornerShape(50),
-        backgroundColor = Color.White,
+        modifier = Modifier,
+//            .padding(bottom = if (context.hasNavigationBar()) 40.dp else 0.dp),
+        backgroundColor = MaterialTheme.colorScheme.background,
+        cutoutShape = RoundedCornerShape(50.dp),
         contentPadding = PaddingValues(0.dp),
         content = {
             BottomNavigation(
+                modifier = Modifier.fillMaxSize(),
                 backgroundColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 elevation = 0.dp
-            ) {
+            )
+            {
                 BottomNavigationItem(
                     modifier = Modifier.padding(end = 30.dp),
                     selected = false,
