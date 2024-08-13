@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.data.data
+package com.fastlink.zekrapp.appData.data
 
 val zikerData: ArrayList<ArrayList<out Any?>> = arrayListOf(
     arrayListOf(

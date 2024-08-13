@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.data.data
+package com.fastlink.zekrapp.appData.data
 
 val categoryData : ArrayList<ArrayList<Any>> = arrayListOf(
     arrayListOf(

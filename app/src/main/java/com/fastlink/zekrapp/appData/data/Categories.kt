@@ -1,5 +1,6 @@
-import com.fastlink.zekrapp.data.data.categoryData
-import com.fastlink.zekrapp.data.model.CategoryModel
+package com.fastlink.zekrapp.appData.data
+
+import com.fastlink.zekrapp.appData.model.CategoryModel
 
 val categoriesData = mutableListOf<CategoryModel>()
 
@@ -9,8 +10,8 @@ fun getCateories(){
         categoriesData.add(
             CategoryModel(
                 id = i[0].toString().toInt(),
-                name = i[1].toString(),
-                nameAbstract = i[2].toString()
+                categoryTitle = i[1].toString(),
+                plainCategoryTitle = i[2].toString()
             )
         )
     }

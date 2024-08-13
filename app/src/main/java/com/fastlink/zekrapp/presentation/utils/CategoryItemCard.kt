@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fastlink.zekrapp.LocalNavController
 import com.fastlink.zekrapp.LocalViewModel
-import com.fastlink.zekrapp.data.model.CategoryModel
+import com.fastlink.zekrapp.appData.model.CategoryModel
 import com.fastlink.zekrapp.presentation.navigation.Screen
 
 @Composable
@@ -62,7 +62,7 @@ fun CategoryItem(category: CategoryModel) {
                     }
             )
             Text(
-                text = category.name,
+                text = category.categoryTitle,
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W400),
                 modifier = Modifier
                     .padding(horizontal = 10.dp)

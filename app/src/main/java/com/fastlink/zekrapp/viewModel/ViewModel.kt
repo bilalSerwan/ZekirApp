@@ -3,12 +3,12 @@ package com.fastlink.zekrapp.viewModel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import categoriesData
-import com.fastlink.zekrapp.data.model.CategoryModel
-import com.fastlink.zekrapp.data.model.ZekrModel
-import getCateories
-import getZekrs
-import zekrs
+import com.fastlink.zekrapp.appData.data.categoriesData
+import com.fastlink.zekrapp.appData.model.CategoryModel
+import com.fastlink.zekrapp.appData.model.ZekrModel
+import com.fastlink.zekrapp.appData.data.getCateories
+import com.fastlink.zekrapp.appData.data.getZekrs
+import com.fastlink.zekrapp.appData.data.zekrs
 
 class MainViewModel : ViewModel() {
     init {

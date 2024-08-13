@@ -1,10 +1,10 @@
 package com.fastlink.zekrapp.presentation
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,11 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fastlink.zekrapp.LocalToast
 import com.fastlink.zekrapp.LocalViewModel
+import com.fastlink.zekrapp.R
 import com.fastlink.zekrapp.presentation.utils.DashedDevider
 import com.fastlink.zekrapp.presentation.utils.appBars.ZekirScreenAppBar
 import com.fastlink.zekrapp.presentation.utils.archBorder
@@ -45,10 +47,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-@SuppressLint(
-    "UnrememberedMutableInteractionSource", "CoroutineCreationDuringComposition",
-    "ShowToast"
-)
+
 @Composable
 fun ZekirScreen(categoryId: Int) {
     val toast = LocalToast.current
@@ -92,30 +91,39 @@ fun ZekirScreen(categoryId: Int) {
     }
 
     Scaffold(
+        backgroundColor = MaterialTheme.colorScheme.background,
         topBar = {
-            ZekirScreenAppBar(title = category.name)
+            ZekirScreenAppBar(title = category.categoryTitle)
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    onClicked()
-                },
-                elevation = FloatingActionButtonDefaults.elevation(
-                    defaultElevation = 10.dp,
-                    pressedElevation = 10.dp,
-                ),
-                backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+            Box(
                 modifier = Modifier
-                    .size(75.dp)
+                    .size(90.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.onPrimary)
-                    .archBorder(animatedBorder = animatedBorder),
+                    .background(MaterialTheme.colorScheme.background),
+                contentAlignment = Alignment.Center,
             ) {
-                Text(
-                    text = zekirCounter.intValue.toString(),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                FloatingActionButton(
+                    onClick = {
+                        onClicked()
+                    },
+                    elevation = FloatingActionButtonDefaults.elevation(
+                        defaultElevation = 10.dp,
+                        pressedElevation = 10.dp,
+                    ),
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    modifier = Modifier
+                        .size(75.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.onPrimary)
+                        .archBorder(animatedBorder = animatedBorder),
+                ) {
+                    Text(
+                        text = zekirCounter.intValue.toString(),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
             }
         },
 
@@ -123,8 +131,9 @@ fun ZekirScreen(categoryId: Int) {
         isFloatingActionButtonDocked = true,
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
-            ZekirScreenBottomAppBar(category = category,
-                onCopyIconClicked = { clipboardManager.setText(AnnotatedString(zekirs[zekirNumber.intValue].description)) }
+            ZekirScreenBottomAppBar(
+                category = category,
+                onCopyIconClicked = { clipboardManager.setText(AnnotatedString(zekirs[zekirNumber.intValue].zekirTitle)) }
             )
         }
     ) {
@@ -163,13 +172,14 @@ fun ZekirScreen(categoryId: Int) {
                 .padding(16.dp),
         ) {
             Text(
-                text = zekirs[zekirNumber.intValue].description,
+                text = zekirs[zekirNumber.intValue].zekirTitle,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.titleMedium,
             )
             Text(
-                text = "(${if (zekirs[zekirNumber.intValue].counter == "null") "مرة واحدة" else zekirs[zekirNumber.intValue].counter})",
+                text =
+                    if (zekirs[zekirNumber.intValue].counterAsString == "null") stringResource(id = R.string.readOnceInArabic) else zekirs[zekirNumber.intValue].counterAsString,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.bodyMedium

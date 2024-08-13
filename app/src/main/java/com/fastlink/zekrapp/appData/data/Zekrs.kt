@@ -1,5 +1,6 @@
-import com.fastlink.zekrapp.data.data.zikerData
-import com.fastlink.zekrapp.data.model.ZekrModel
+package com.fastlink.zekrapp.appData.data
+
+import com.fastlink.zekrapp.appData.model.ZekrModel
 
 val zekrs = mutableListOf<ZekrModel>()
 
@@ -9,10 +10,10 @@ fun getZekrs(){
             ZekrModel(
                 id = i[0].toString().toInt(),
                 categoryId = i[1].toString().toInt(),
-                description = i[2].toString(),
-                descriptionAbstract = i[3].toString(),
+                zekirTitle = i[2].toString(),
+                plainZekirTitle = i[3].toString(),
                 hint = i[4].toString(),
-                counter = i[5].toString(),
+                counterAsString = i[5].toString(),
                 counterNumber = i[6].toString().toInt()
             )
         )
