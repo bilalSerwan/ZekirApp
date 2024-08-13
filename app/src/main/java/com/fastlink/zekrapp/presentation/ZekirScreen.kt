@@ -21,11 +21,10 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,7 +34,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.fastlink.zekrapp.LocalToast
 import com.fastlink.zekrapp.LocalViewModel
 import com.fastlink.zekrapp.R
 import com.fastlink.zekrapp.presentation.utils.DashedDevider
@@ -43,69 +41,51 @@ import com.fastlink.zekrapp.presentation.utils.appBars.ZekirScreenAppBar
 import com.fastlink.zekrapp.presentation.utils.archBorder
 import com.fastlink.zekrapp.presentation.utils.bottomAppBar.ZekirScreenBottomAppBar
 import com.fastlink.zekrapp.presentation.utils.dashedBorder
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
+import com.fastlink.zekrapp.presentation.utils.halfCircle
 
 
 @Composable
 fun ZekirScreen(categoryId: Int) {
-    val toast = LocalToast.current
+//    val toast = LocalToast.current
     val clipboardManager = LocalClipboardManager.current
     val viewModel = LocalViewModel.current
     val scope = rememberCoroutineScope()
-    val category = viewModel.getCategoryById(categoryId)
-    val zekirs = viewModel.getZekirByCategoryId(category.id)
-    val zekirNumber = remember {
-        mutableIntStateOf(0)
+    val category = remember {
+        viewModel.getCategoryById(categoryId)
     }
-    val zekirCounter = remember {
-        mutableIntStateOf(0)
-    }
-    LaunchedEffect(true) {
-        toast(" الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}")
-    }
+
+        viewModel.getZekirByCategoryId(category.id)
+
+
+    val zekirNumber = viewModel.zekirNumber
+    val zekirCounter = viewModel.zekirCounter
+
+//    LaunchedEffect(true) {
+//        toast(" الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}")
+//    }
     val animatedBorder by animateFloatAsState(
         targetValue =
-        (zekirCounter.intValue.toFloat() / zekirs[zekirNumber.intValue].counterNumber.toFloat()) * 360f,
+        (zekirCounter.intValue.toFloat() / viewModel.zekirs[zekirNumber.intValue].counterNumber.toFloat()) * 360f,
         label = "",
         animationSpec = tween(1000)
     )
 
-    fun onClicked() {
-        if (zekirCounter.intValue < zekirs[zekirNumber.intValue].counterNumber) {
-            zekirCounter.intValue++
-            if (zekirCounter.intValue == zekirs[zekirNumber.intValue].counterNumber) {
-                scope.launch {
-                    delay(1500)
-                    if (zekirNumber.intValue < zekirs.size - 1) {
-                        zekirCounter.intValue = 0
-                        zekirNumber.intValue++
-                        scope.launch {
-                            toast(" الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}")
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
         topBar = {
-            ZekirScreenAppBar(title = category.categoryTitle)
+            ZekirScreenAppBar(title =category.categoryTitle)
         },
         floatingActionButton = {
             Box(
                 modifier = Modifier
                     .size(90.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.background),
+                    .halfCircle(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center,
             ) {
                 FloatingActionButton(
                     onClick = {
-                        onClicked()
+                        viewModel.onClicked(scope)
                     },
                     elevation = FloatingActionButtonDefaults.elevation(
                         defaultElevation = 10.dp,
@@ -133,7 +113,7 @@ fun ZekirScreen(categoryId: Int) {
         bottomBar = {
             ZekirScreenBottomAppBar(
                 category = category,
-                onCopyIconClicked = { clipboardManager.setText(AnnotatedString(zekirs[zekirNumber.intValue].zekirTitle)) }
+                onCopyIconClicked = { clipboardManager.setText(AnnotatedString(viewModel.zekirs[zekirNumber.intValue].zekirTitle)) }
             )
         }
     ) {
@@ -146,9 +126,9 @@ fun ZekirScreen(categoryId: Int) {
                     rememberScrollState()
                 )
                 .clickable(
-                    enabled = (zekirCounter.intValue < zekirs[zekirNumber.intValue].counterNumber) || zekirNumber.intValue < zekirs.size - 1,
+                    enabled = (zekirCounter.intValue < viewModel.zekirs[zekirNumber.intValue].counterNumber) || zekirNumber.intValue < viewModel.zekirs.size - 1,
                     onClick = {
-                        onClicked()
+                        viewModel.onClicked(scope)
                     }
                 )
                 .padding(
@@ -172,14 +152,16 @@ fun ZekirScreen(categoryId: Int) {
                 .padding(16.dp),
         ) {
             Text(
-                text = zekirs[zekirNumber.intValue].zekirTitle,
+                text = viewModel.zekirs[zekirNumber.intValue].zekirTitle,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.titleMedium,
             )
             Text(
                 text =
-                    if (zekirs[zekirNumber.intValue].counterAsString == "null") stringResource(id = R.string.readOnceInArabic) else zekirs[zekirNumber.intValue].counterAsString,
+                if (viewModel.zekirs[zekirNumber.intValue].counterAsString == "null")
+                    stringResource(id = R.string.readOnceInArabic)
+                else viewModel.zekirs[zekirNumber.intValue].counterAsString,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.bodyMedium
@@ -192,7 +174,7 @@ fun ZekirScreen(categoryId: Int) {
                     .padding(10.dp)
             )
             Text(
-                text = zekirs[zekirNumber.intValue].hint,
+                text = viewModel.zekirs[zekirNumber.intValue].hint,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.bodyMedium,
