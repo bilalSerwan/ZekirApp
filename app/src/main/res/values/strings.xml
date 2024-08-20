@@ -4,4 +4,6 @@
     <string name="readOnceInArabic">مرة واحدة</string>
     <string name="Home">Home</string>
     <string name="Favorite">Favorite</string>
+    <string name="HomeAppBarTitle">Home Screen</string>
+    <string name="FavoriteAppBarTitle">Favorite Screen</string>
 </resources>

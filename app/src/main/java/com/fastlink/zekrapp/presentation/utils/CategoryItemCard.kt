@@ -24,11 +24,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fastlink.zekrapp.LocalNavController
 import com.fastlink.zekrapp.LocalViewModel
-import com.fastlink.zekrapp.appData.model.CategoryModel
+import com.fastlink.zekrapp.appData.model.ZekirCategoryModel
 import com.fastlink.zekrapp.presentation.navigation.Screen
 
 @Composable
-fun CategoryItem(category: CategoryModel) {
+fun CategoryItem(category: ZekirCategoryModel) {
     val navController = LocalNavController.current
     val viewModel = LocalViewModel.current
     Surface(
@@ -47,11 +47,9 @@ fun CategoryItem(category: CategoryModel) {
                 },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-        )
-        {
-            Icon(
-                imageVector = if (category.isFavorite) Icons.Default.Favorite
-                else Icons.Default.FavoriteBorder,
+        ) {
+            Icon(imageVector = if (category.isFavorite) Icons.Default.Favorite
+            else Icons.Default.FavoriteBorder,
                 contentDescription = "Favorite",
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
@@ -59,11 +57,11 @@ fun CategoryItem(category: CategoryModel) {
                     .size(25.dp)
                     .clickable {
                         viewModel.updateCategory(category.id, !category.isFavorite)
-                    }
-            )
+                    })
             Text(
                 text = category.categoryTitle,
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W400),
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
                     .fillMaxWidth(),

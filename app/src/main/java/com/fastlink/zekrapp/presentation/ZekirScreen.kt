@@ -1,5 +1,7 @@
 package com.fastlink.zekrapp.presentation
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -18,13 +20,15 @@ import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,49 +38,58 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.fastlink.zekrapp.LocalNavController
 import com.fastlink.zekrapp.LocalViewModel
 import com.fastlink.zekrapp.R
 import com.fastlink.zekrapp.presentation.utils.DashedDevider
-import com.fastlink.zekrapp.presentation.utils.appBars.ZekirScreenAppBar
+import com.fastlink.zekrapp.presentation.utils.AppBar
 import com.fastlink.zekrapp.presentation.utils.archBorder
-import com.fastlink.zekrapp.presentation.utils.bottomAppBar.ZekirScreenBottomAppBar
+import com.fastlink.zekrapp.presentation.utils.bottomAppBar.BottomBar
+import com.fastlink.zekrapp.presentation.utils.bottomAppBar.getListOfBottomBarItemsInZekirScreen
 import com.fastlink.zekrapp.presentation.utils.dashedBorder
 import com.fastlink.zekrapp.presentation.utils.halfCircle
 
 
+@SuppressLint("RememberReturnType")
 @Composable
 fun ZekirScreen(categoryId: Int) {
-//    val toast = LocalToast.current
-    val clipboardManager = LocalClipboardManager.current
     val viewModel = LocalViewModel.current
+    val navController = LocalNavController.current
+    val clipboardManager = LocalClipboardManager.current
     val scope = rememberCoroutineScope()
-    val category = remember {
-        viewModel.getCategoryById(categoryId)
-    }
-
-        viewModel.getZekirByCategoryId(category.id)
-
-
+    remember { viewModel.getZekirByCategoryId(categoryId) }
+    val category = viewModel.getCategoryById(categoryId)
     val zekirNumber = viewModel.zekirNumber
     val zekirCounter = viewModel.zekirCounter
-
-//    LaunchedEffect(true) {
-//        toast(" الذكر ${zekirNumber.intValue + 1} من ${zekirs.size}")
-//    }
     val animatedBorder by animateFloatAsState(
         targetValue =
-        (zekirCounter.intValue.toFloat() / viewModel.zekirs[zekirNumber.intValue].counterNumber.toFloat()) * 360f,
+        (zekirCounter.intValue.toFloat() / viewModel.zekirs[zekirNumber.intValue].numericCounter.toFloat()) * 360f,
         label = "",
         animationSpec = tween(1000)
     )
 
-
+    fun buttonIsEnable(): Boolean {
+        return zekirNumber.intValue + 1 < viewModel.zekirs.size || zekirCounter.intValue < viewModel.zekirs[zekirNumber.intValue].numericCounter
+    }
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
         topBar = {
-            ZekirScreenAppBar(title =category.categoryTitle)
-        },
-        floatingActionButton = {
+            AppBar(
+                title = category.categoryTitle,
+                actions = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(end = 20.dp, top = 2.dp)
+                            .clickable {
+                                navController.navigateUp()
+                            },
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                },
+            )
+        }, floatingActionButton = {
             Box(
                 modifier = Modifier
                     .size(90.dp)
@@ -85,7 +98,7 @@ fun ZekirScreen(categoryId: Int) {
             ) {
                 FloatingActionButton(
                     onClick = {
-                        viewModel.onClicked(scope)
+                        viewModel.onClickedFAB(scope)
                     },
                     elevation = FloatingActionButtonDefaults.elevation(
                         defaultElevation = 10.dp,
@@ -106,15 +119,21 @@ fun ZekirScreen(categoryId: Int) {
                 }
             }
         },
-
-
         isFloatingActionButtonDocked = true,
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
-            ZekirScreenBottomAppBar(
-                category = category,
-                onCopyIconClicked = { clipboardManager.setText(AnnotatedString(viewModel.zekirs[zekirNumber.intValue].zekirTitle)) }
-            )
+            BottomBar(bottomBarItems = getListOfBottomBarItemsInZekirScreen(
+                zekirCategory = category,
+                onCopyIconClicked = {
+                    clipboardManager.setText(AnnotatedString(viewModel.zekirs[zekirNumber.intValue].zekirTitle))
+                },
+                onFavoriteIconClicked = {
+                    viewModel.updateCategory(
+                        categoryId = category.id,
+                        isFavorite = !category.isFavorite
+                    )
+                }
+            ))
         }
     ) {
         Column(
@@ -122,13 +141,15 @@ fun ZekirScreen(categoryId: Int) {
             modifier = Modifier
                 .padding(it)
                 .fillMaxSize()
-                .verticalScroll(
-                    rememberScrollState()
-                )
+                .verticalScroll(rememberScrollState())
                 .clickable(
-                    enabled = (zekirCounter.intValue < viewModel.zekirs[zekirNumber.intValue].counterNumber) || zekirNumber.intValue < viewModel.zekirs.size - 1,
+                    enabled = buttonIsEnable(),
                     onClick = {
-                        viewModel.onClicked(scope)
+                        Log.d(
+                            "ZekirScreen",
+                            "onClick: ${viewModel.zekirs.size} && ${zekirNumber.intValue}"
+                        )
+                        viewModel.onClickedZekirCard(scope)
                     }
                 )
                 .padding(
@@ -155,15 +176,19 @@ fun ZekirScreen(categoryId: Int) {
                 text = viewModel.zekirs[zekirNumber.intValue].zekirTitle,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleMedium,
             )
             Text(
-                text =
-                if (viewModel.zekirs[zekirNumber.intValue].counterAsString == "null")
-                    stringResource(id = R.string.readOnceInArabic)
-                else viewModel.zekirs[zekirNumber.intValue].counterAsString,
+                text = "\n(${
+                    if (viewModel.zekirs[zekirNumber.intValue].textCounter == "null") stringResource(
+                        id = R.string.readOnceInArabic
+                    )
+                    else viewModel.zekirs[zekirNumber.intValue].textCounter
+                })",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.bodyMedium
             )
             DashedDevider(
@@ -183,8 +208,4 @@ fun ZekirScreen(categoryId: Int) {
 
         }
     }
-
 }
-
-
-
