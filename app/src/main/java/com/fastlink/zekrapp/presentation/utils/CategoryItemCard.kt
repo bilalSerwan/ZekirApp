@@ -41,10 +41,10 @@ fun CategoryItem(category: ZekirCategoryModel) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 10.dp)
                 .clickable {
                     navController.navigate("${Screen.ZekirScreen.route}/${category.id}")
-                },
+                }
+                .padding(vertical = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {

@@ -1,7 +1,6 @@
 package com.fastlink.zekrapp.presentation
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -10,22 +9,23 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FabPosition
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,17 +43,21 @@ import com.fastlink.zekrapp.LocalViewModel
 import com.fastlink.zekrapp.R
 import com.fastlink.zekrapp.presentation.utils.DashedDevider
 import com.fastlink.zekrapp.presentation.utils.AppBar
-import com.fastlink.zekrapp.presentation.utils.archBorder
+import com.fastlink.zekrapp.presentation.utils.CustomFloatingActionButton
+import com.fastlink.zekrapp.presentation.utils.CustomSnackBar
 import com.fastlink.zekrapp.presentation.utils.bottomAppBar.BottomBar
 import com.fastlink.zekrapp.presentation.utils.bottomAppBar.getListOfBottomBarItemsInZekirScreen
 import com.fastlink.zekrapp.presentation.utils.dashedBorder
-import com.fastlink.zekrapp.presentation.utils.halfCircle
 
 
 @SuppressLint("RememberReturnType")
 @Composable
 fun ZekirScreen(categoryId: Int) {
+    val snackBarState = remember {
+        SnackbarHostState()
+    }
     val viewModel = LocalViewModel.current
+    val scaffoldState = rememberScaffoldState()
     val navController = LocalNavController.current
     val clipboardManager = LocalClipboardManager.current
     val scope = rememberCoroutineScope()
@@ -71,7 +75,13 @@ fun ZekirScreen(categoryId: Int) {
     fun buttonIsEnable(): Boolean {
         return zekirNumber.intValue + 1 < viewModel.zekirs.size || zekirCounter.intValue < viewModel.zekirs[zekirNumber.intValue].numericCounter
     }
+
+
+    LaunchedEffect(key1 = zekirNumber.intValue) {
+        snackBarState.showSnackbar("")
+    }
     Scaffold(
+        scaffoldState = scaffoldState,
         backgroundColor = MaterialTheme.colorScheme.background,
         topBar = {
             AppBar(
@@ -89,35 +99,12 @@ fun ZekirScreen(categoryId: Int) {
                     )
                 },
             )
-        }, floatingActionButton = {
-            Box(
-                modifier = Modifier
-                    .size(90.dp)
-                    .halfCircle(MaterialTheme.colorScheme.background),
-                contentAlignment = Alignment.Center,
-            ) {
-                FloatingActionButton(
-                    onClick = {
-                        viewModel.onClickedFAB(scope)
-                    },
-                    elevation = FloatingActionButtonDefaults.elevation(
-                        defaultElevation = 10.dp,
-                        pressedElevation = 10.dp,
-                    ),
-                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-                    modifier = Modifier
-                        .size(75.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.onPrimary)
-                        .archBorder(animatedBorder = animatedBorder),
-                ) {
-                    Text(
-                        text = zekirCounter.intValue.toString(),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                }
-            }
+        },
+        floatingActionButton = {
+            CustomFloatingActionButton(
+                scope = scope,
+                animatedBorder = animatedBorder
+            )
         },
         isFloatingActionButtonDocked = true,
         floatingActionButtonPosition = FabPosition.Center,
@@ -145,10 +132,6 @@ fun ZekirScreen(categoryId: Int) {
                 .clickable(
                     enabled = buttonIsEnable(),
                     onClick = {
-                        Log.d(
-                            "ZekirScreen",
-                            "onClick: ${viewModel.zekirs.size} && ${zekirNumber.intValue}"
-                        )
                         viewModel.onClickedZekirCard(scope)
                     }
                 )
@@ -181,10 +164,7 @@ fun ZekirScreen(categoryId: Int) {
             )
             Text(
                 text = "\n(${
-                    if (viewModel.zekirs[zekirNumber.intValue].textCounter == "null") stringResource(
-                        id = R.string.readOnceInArabic
-                    )
-                    else viewModel.zekirs[zekirNumber.intValue].textCounter
+                    viewModel.zekirs[zekirNumber.intValue].textCounter ?: stringResource(id = R.string.readOnceInArabic)
                 })",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
@@ -205,7 +185,17 @@ fun ZekirScreen(categoryId: Int) {
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
-
+        }
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .offset(y = 200.dp),
+        ) {
+            SnackbarHost(hostState = snackBarState) {
+                CustomSnackBar("الذکر ${zekirNumber.intValue + 1} من ${viewModel.zekirs.size}")
+            }
         }
     }
 }
+

@@ -57,7 +57,7 @@ fun HomeScreen() {
             LazyColumn(
                 modifier = Modifier.background(MaterialTheme.colorScheme.background)
             ) {
-                items(viewModel.zekirCategories.value) { category ->
+                items(viewModel.getAllZekirCategories()) { category ->
                     CategoryItem(category = category)
                 }
                 item {

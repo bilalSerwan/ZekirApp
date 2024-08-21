@@ -14,17 +14,7 @@ object ZekirSingleton {
 
     private fun getZekrs() {
         for (i in zekirData) {
-            _zekirs.add(
-                ZekirModel(
-                    id = i[0].toString().toInt(),
-                    categoryId = i[1].toString().toInt(),
-                    zekirTitle = i[2].toString(),
-                    plainZekirTitle = i[3].toString(),
-                    hint = i[4].toString(),
-                    textCounter = i[5].toString(),
-                    numericCounter = i[6].toString().toInt()
-                )
-            )
+            _zekirs.add(i)
         }
     }
 }

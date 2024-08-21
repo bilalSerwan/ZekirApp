@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.fastlink.zekrapp.appData.CategoryRepository
 import com.fastlink.zekrapp.appData.ZekirCategorySingleton
 import com.fastlink.zekrapp.ui.theme.ZekrAppTheme
 import com.fastlink.zekrapp.presentation.navigation.Navigation
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val context = LocalContext.current
-            ZekirCategorySingleton.getZekirCategoriesFromCSVFile(context)
+            CategoryRepository.getZekirCategoriesFromCSVFile(context)
             ZekrAppTheme {
                 val navigation = rememberNavController()
                 val viewmodel: MainViewModel = viewModel()
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 
 

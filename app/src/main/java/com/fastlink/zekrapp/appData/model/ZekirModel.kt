@@ -6,6 +6,6 @@ data class ZekirModel(
     val zekirTitle: String,
     val plainZekirTitle: String,
     val hint: String,
-    val textCounter: String,
+    val textCounter: String?,
     val numericCounter: Int
 )
