@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun Modifier.halfCircle(
-    cirlceColor: Color
-)= this.drawWithContent {
+    color: Color
+) = this.drawWithContent {
 
     this.drawArc(
-        color =cirlceColor,
-        startAngle =0f,
+        color = color,
+        startAngle = 0f,
         sweepAngle = 180f,
         useCenter = true,
     )

@@ -9,10 +9,10 @@ object ZekirSingleton {
     fun getZekirsByCategoryId(categoryId: Int) = _zekirs.filter { it.categoryId == categoryId }
 
     init {
-        getZekrs()
+        addZekrs()
     }
 
-    private fun getZekrs() {
+    private fun addZekrs() {
         for (i in zekirData) {
             _zekirs.add(i)
         }

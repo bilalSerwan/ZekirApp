@@ -11,15 +11,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.fastlink.zekrapp.appData.CategoryRepository
 import com.fastlink.zekrapp.appData.ZekirCategorySingleton
 import com.fastlink.zekrapp.ui.theme.ZekrAppTheme
 import com.fastlink.zekrapp.presentation.navigation.Navigation
-import com.fastlink.zekrapp.viewModel.MainViewModel
+import com.fastlink.zekrapp.viewModel.ZekirCategoryViewModel
 
 
 val LocalNavController = compositionLocalOf<NavHostController> { error("error in navController") }
-val LocalViewModel = compositionLocalOf<MainViewModel> { error("error in view model") }
+val LocalViewModel = compositionLocalOf<ZekirCategoryViewModel> { error("error in view model") }
 
 class MainActivity : ComponentActivity() {
 
@@ -29,10 +28,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val context = LocalContext.current
-            CategoryRepository.getZekirCategoriesFromCSVFile(context)
+            ZekirCategorySingleton.getZekirCategoriesFromCSVFile(context)
             ZekrAppTheme {
                 val navigation = rememberNavController()
-                val viewmodel: MainViewModel = viewModel()
+                val viewmodel: ZekirCategoryViewModel = viewModel()
                 CompositionLocalProvider(
                     LocalNavController provides navigation,
                     LocalViewModel provides viewmodel,

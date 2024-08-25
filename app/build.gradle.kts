@@ -51,6 +51,8 @@ android {
 
 dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.6.8")
+    implementation ("androidx.compose.foundation:foundation:1.4.3")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.30.1")
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.material)
