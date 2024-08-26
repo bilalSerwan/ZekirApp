@@ -19,19 +19,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.fastlink.zekrapp.LocalNavController
-import com.fastlink.zekrapp.LocalViewModel
 import com.fastlink.zekrapp.R
 import com.fastlink.zekrapp.presentation.utils.CategoryItem
 import com.fastlink.zekrapp.presentation.utils.AppBar
 import com.fastlink.zekrapp.presentation.utils.bottomAppBar.BottomBar
 import com.fastlink.zekrapp.presentation.utils.bottomAppBar.getListOfBottomBarItems
+import com.fastlink.zekrapp.viewModel.ZekirCategoryViewModel
 
 @Composable
-fun FavoriteScreen() {
-    val viewModel = LocalViewModel.current
-    val navController = LocalNavController.current
+fun FavoriteScreen(
+    navController: NavController,
+    zekirCategoryViewModel: ZekirCategoryViewModel
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     Scaffold(
@@ -57,7 +59,7 @@ fun FavoriteScreen() {
                 .fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
-            if (viewModel.getFavoriteCategories().isEmpty()) {
+            if (zekirCategoryViewModel.getFavoriteZekirCategories().isEmpty()) {
                 Text(
                     text = "No Favorite Categories Yet",
                     modifier = Modifier.fillMaxWidth(),
@@ -72,8 +74,12 @@ fun FavoriteScreen() {
                         .background(MaterialTheme.colorScheme.background),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    items(viewModel.getFavoriteCategories()) { category ->
-                        CategoryItem(category = category)
+                    items(zekirCategoryViewModel.getFavoriteZekirCategories()) { category ->
+                        CategoryItem(
+                            category = category,
+                            navController = navController,
+                            zekirCategoryViewModel = zekirCategoryViewModel
+                        )
                     }
                     item {
                         Spacer(

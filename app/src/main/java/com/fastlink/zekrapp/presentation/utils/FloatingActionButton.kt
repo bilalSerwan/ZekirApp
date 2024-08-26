@@ -42,7 +42,7 @@ fun CustomFloatingActionButton(
         FloatingActionButton(
             onClick = {
                 coroutineScope.launch {
-                    viewModel.handleFABClick(coroutineScope, pagerState.currentPage)
+                    viewModel.handleFABClick(pagerState.currentPage)
                     if (viewModel.shouldNavigateToNextZekir(pagerState.currentPage))
                         pagerState.animateScrollToPage(
                             page = pagerState.currentPage + 1,

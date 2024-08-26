@@ -22,15 +22,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.fastlink.zekrapp.LocalNavController
-import com.fastlink.zekrapp.LocalViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.fastlink.zekrapp.appData.model.ZekirCategoryModel
 import com.fastlink.zekrapp.presentation.navigation.Screen
+import com.fastlink.zekrapp.viewModel.ZekirCategoryViewModel
 
 @Composable
-fun CategoryItem(category: ZekirCategoryModel) {
-    val navController = LocalNavController.current
-    val viewModel = LocalViewModel.current
+fun CategoryItem(category: ZekirCategoryModel,navController: NavController,zekirCategoryViewModel: ZekirCategoryViewModel) {
     Surface(
         modifier = Modifier
             .heightIn(min = 70.dp, max = 150.dp)
@@ -56,7 +55,7 @@ fun CategoryItem(category: ZekirCategoryModel) {
                     .padding(start = 20.dp)
                     .size(25.dp)
                     .clickable {
-                        viewModel.updateCategory(category.id, !category.isFavorite)
+                        zekirCategoryViewModel.updateZekirCategory(category.id, !category.isFavorite)
                     })
             Text(
                 text = category.categoryTitle,

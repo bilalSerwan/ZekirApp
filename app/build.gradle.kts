@@ -1,12 +1,19 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("android") version "2.0.0"
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.compose.compiler)
+
 }
 
 android {
     namespace = "com.fastlink.zekrapp"
     compileSdk = 34
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
     defaultConfig {
         applicationId = "com.fastlink.zekrapp"
         minSdk = 24
@@ -40,7 +47,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packaging {
         resources {
@@ -50,9 +57,15 @@ android {
 }
 
 dependencies {
-    implementation("androidx.compose.material:material-icons-extended:1.6.8")
-    implementation ("androidx.compose.foundation:foundation:1.4.3")
-    implementation ("com.google.accompanist:accompanist-pager-indicators:0.30.1")
+    implementation(libs.androidx.material.icons.extended)
+    implementation (libs.androidx.foundation)
+    implementation (libs.accompanist.pager.indicators)
+
+    //HILT
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation (libs.androidx.hilt.navigation.compose)  // Hilt + Compose integration
+
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.material)
@@ -72,4 +85,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+kapt {
+    correctErrorTypes = true
 }

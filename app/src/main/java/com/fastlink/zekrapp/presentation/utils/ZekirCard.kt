@@ -37,9 +37,9 @@ fun ZekirCard(pagerState: PagerState, viewModel: ZekirViewModel) {
         modifier = Modifier
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
-            .clickable(enabled = viewModel.cardButtonIsEnable(pagerState.currentPage), onClick = {
+            .clickable(enabled = viewModel.isCardButtonEnabled(pagerState.currentPage), onClick = {
                 coroutineScope.launch {
-                    viewModel.handleZekirCardClick(coroutineScope, pagerState.currentPage)
+                    viewModel.handleZekirCardClick(pagerState.currentPage)
                     if (viewModel.shouldNavigateToNextZekir(pagerState.currentPage))
                         pagerState.animateScrollToPage(
                             pagerState.currentPage + 1,

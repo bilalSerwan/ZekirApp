@@ -2,43 +2,51 @@ package com.fastlink.zekrapp.viewModel
 
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.fastlink.zekrapp.appData.ZekirSingleton
 import com.fastlink.zekrapp.appData.model.ZekirModel
-import kotlinx.coroutines.CoroutineScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ZekirViewModel(categoryId: Int) : ViewModel() {
+@HiltViewModel
+class ZekirViewModel @Inject constructor(
+    private val zekirSingleton: ZekirSingleton
+) : ViewModel() {
+    private var categoryId: Int = 0
     val zekirCounter = mutableIntStateOf(0)
     var zekirs: List<ZekirModel> = emptyList()
+        private set
 
-    init {
-        getZekirByCategoryId(categoryId)
+    fun setCategoryIdAndGetZekirs(categoryId: Int) {
+        this.categoryId = categoryId
+        getZekirsByCategoryIdAndResetZekirCounter(categoryId)
     }
 
-    private fun getZekirByCategoryId(categoryId: Int) {
+    private fun getZekirsByCategoryIdAndResetZekirCounter(categoryId: Int) {
         resetZekirCounter()
-        zekirs = ZekirSingleton.getZekirsByCategoryId(categoryId = categoryId)
+        zekirs = zekirSingleton.getZekirsByCategoryId(categoryId = categoryId)
     }
 
     fun resetZekirCounter() {
         zekirCounter.intValue = 0
     }
 
-    fun cardButtonIsEnable(zekirNumber: Int): Boolean {
+    fun isCardButtonEnabled(zekirNumber: Int): Boolean {
         return zekirNumber + 1 < zekirs.size || zekirCounter.intValue < zekirs[zekirNumber].numericCounter
     }
 
-    suspend fun handleFABClick(scope: CoroutineScope, zekirNumber: Int) =
-        incrementZekirCounter(scope, zekirNumber)
+    suspend fun handleFABClick(zekirNumber: Int) =
+        incrementZekirCounter(zekirNumber)
 
-    suspend fun handleZekirCardClick(scope: CoroutineScope, zekirNumber: Int) =
-        incrementZekirCounter(scope, zekirNumber)
+    suspend fun handleZekirCardClick(zekirNumber: Int) =
+        incrementZekirCounter(zekirNumber)
 
-    private suspend fun incrementZekirCounter(scope: CoroutineScope, zekirNumber: Int) {
+    private suspend fun incrementZekirCounter(zekirNumber: Int) {
         if (zekirCounter.intValue < zekirs[zekirNumber].numericCounter) {
             zekirCounter.intValue++
-            scope.launch {
+            viewModelScope.launch {
                 delay(1000)
             }.join()
         }

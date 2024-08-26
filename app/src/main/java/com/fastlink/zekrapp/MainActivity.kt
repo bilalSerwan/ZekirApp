@@ -5,38 +5,33 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.fastlink.zekrapp.appData.ZekirCategorySingleton
 import com.fastlink.zekrapp.ui.theme.ZekrAppTheme
 import com.fastlink.zekrapp.presentation.navigation.Navigation
 import com.fastlink.zekrapp.viewModel.ZekirCategoryViewModel
+import com.fastlink.zekrapp.viewModel.ZekirViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
-val LocalNavController = compositionLocalOf<NavHostController> { error("error in navController") }
-val LocalViewModel = compositionLocalOf<ZekirCategoryViewModel> { error("error in view model") }
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
+    private val zekirCategoryViewModel: ZekirCategoryViewModel by viewModels()
+    private val zekirViewModel: ZekirViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
         setContent {
-            val context = LocalContext.current
-            ZekirCategorySingleton.getZekirCategoriesFromCSVFile(context)
+            val navController: NavHostController = rememberNavController()
             ZekrAppTheme {
-                val navigation = rememberNavController()
-                val viewmodel: ZekirCategoryViewModel = viewModel()
-                CompositionLocalProvider(
-                    LocalNavController provides navigation,
-                    LocalViewModel provides viewmodel,
-                ) {
-                    Navigation()
+                CompositionLocalProvider {
+                    Navigation(
+                        navController = navController,
+                        zekirCategoryViewModel = zekirCategoryViewModel,
+                        zekirViewModel = zekirViewModel
+                    )
                 }
             }
         }

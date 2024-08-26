@@ -1,20 +1,34 @@
 package com.fastlink.zekrapp.viewModel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.fastlink.zekrapp.appData.ZekirCategorySingleton
 import com.fastlink.zekrapp.appData.model.ZekirCategoryModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class ZekirCategoryViewModel : ViewModel() {
+@HiltViewModel
+class ZekirCategoryViewModel @Inject constructor(
+    private val zekirCategorySingleton: ZekirCategorySingleton,
+    @ApplicationContext private val context: Context
+) : ViewModel() {
+
+    init {
+        zekirCategorySingleton.getZekirCategoriesFromCSVFile(context)
+    }
+
     fun getAllZekirCategories(): List<ZekirCategoryModel> =
-        ZekirCategorySingleton.zekirCategoriesData.value
+        zekirCategorySingleton.zekirCategoriesData.value
 
-    fun getFavoriteCategories(): List<ZekirCategoryModel> =
-        ZekirCategorySingleton.getFavoriteCategories()
+    fun getFavoriteZekirCategories(): List<ZekirCategoryModel> =
+        zekirCategorySingleton.getFavoriteCategories()
 
-    fun updateCategory(categoryId: Int, isFavorite: Boolean) =
-        ZekirCategorySingleton.updateCategory(categoryId, isFavorite)
+    fun updateZekirCategory(categoryId: Int, isFavorite: Boolean) =
+        zekirCategorySingleton.updateCategory(categoryId, isFavorite)
 
-    fun getCategoryById(categoryId: Int) = ZekirCategorySingleton.getCategoryById(categoryId)
+    fun getZekirCategoryById(categoryId: Int) =
+        zekirCategorySingleton.getCategoryById(categoryId)
 }
 
 

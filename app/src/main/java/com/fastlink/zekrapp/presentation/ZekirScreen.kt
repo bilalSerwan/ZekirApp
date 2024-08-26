@@ -25,8 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.fastlink.zekrapp.LocalNavController
+import androidx.navigation.NavController
 import com.fastlink.zekrapp.presentation.utils.AppBar
 import com.fastlink.zekrapp.presentation.utils.CustomFloatingActionButton
 import com.fastlink.zekrapp.presentation.utils.CustomSnackBar
@@ -35,22 +34,23 @@ import com.fastlink.zekrapp.presentation.utils.bottomAppBar.BottomBar
 import com.fastlink.zekrapp.presentation.utils.bottomAppBar.getListOfBottomBarItemsInZekirScreen
 import com.fastlink.zekrapp.viewModel.ZekirCategoryViewModel
 import com.fastlink.zekrapp.viewModel.ZekirViewModel
-import com.fastlink.zekrapp.viewModel.ZekirViewModelFactory
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ZekirScreen(categoryId: Int) {
-    val categoryViewModel: ZekirCategoryViewModel = viewModel()
-    val zekirViewModel: ZekirViewModel = viewModel(factory = ZekirViewModelFactory(categoryId))
+fun ZekirScreen(
+    categoryId: Int,
+    navController: NavController,
+    zekirCategoryViewModel: ZekirCategoryViewModel,
+    zekirViewModel: ZekirViewModel,
+) {
     val snackBarState = remember { SnackbarHostState() }
     val pagerState = rememberPagerState(
         pageCount = { zekirViewModel.zekirs.size },
     )
     val scaffoldState = rememberScaffoldState()
-    val navController = LocalNavController.current
     val clipboardManager = LocalClipboardManager.current
-    val zekirCategory = categoryViewModel.getCategoryById(categoryId)
+    val zekirCategory = zekirCategoryViewModel.getZekirCategoryById(categoryId)
 
     LaunchedEffect(key1 = pagerState.currentPage) {
         zekirViewModel.resetZekirCounter()
@@ -90,7 +90,7 @@ fun ZekirScreen(categoryId: Int) {
                         clipboardManager.setText(AnnotatedString(zekirViewModel.zekirs[pagerState.currentPage].zekirTitle))
                     },
                     onFavoriteIconClicked = {
-                        categoryViewModel.updateCategory(
+                        zekirCategoryViewModel.updateZekirCategory(
                             categoryId = zekirCategory.id, isFavorite = !zekirCategory.isFavorite
                         )
                     })

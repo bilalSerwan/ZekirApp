@@ -1,12 +1,16 @@
 package com.fastlink.zekrapp.appData
 
 import android.content.Context
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import com.fastlink.zekrapp.appData.model.ZekirCategoryModel
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import javax.inject.Singleton
 
+@Singleton
 object ZekirCategorySingleton {
     private val _zekirCategoriesData = mutableStateOf<List<ZekirCategoryModel>>(emptyList())
     val zekirCategoriesData: State<List<ZekirCategoryModel>>
@@ -27,7 +31,7 @@ object ZekirCategorySingleton {
         }
     }
 
-    fun getZekirCategoriesFromCSVFile(context: Context) {
+    fun getZekirCategoriesFromCSVFile(context:Context) {
         val inputStream = context.assets.open("ziker_category_data.csv")
         val reader = BufferedReader(InputStreamReader(inputStream))
         val categories = mutableListOf<ZekirCategoryModel>()

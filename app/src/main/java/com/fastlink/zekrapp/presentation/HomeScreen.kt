@@ -15,24 +15,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.fastlink.zekrapp.LocalNavController
-import com.fastlink.zekrapp.LocalViewModel
 import com.fastlink.zekrapp.R
 import com.fastlink.zekrapp.presentation.utils.CategoryItem
 import com.fastlink.zekrapp.presentation.utils.AppBar
 import com.fastlink.zekrapp.presentation.utils.bottomAppBar.BottomBar
 import com.fastlink.zekrapp.presentation.utils.bottomAppBar.getListOfBottomBarItems
+import com.fastlink.zekrapp.viewModel.ZekirCategoryViewModel
 
 @Composable
-fun HomeScreen() {
-    val viewModel = LocalViewModel.current
-
-    val navController = LocalNavController.current
+fun HomeScreen(
+    navController: NavController,
+    zekirCategoryViewModel: ZekirCategoryViewModel
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    Log.d("HomeScreen", "HomeScreen: $navBackStackEntry")
-    Scaffold(
-        backgroundColor = MaterialTheme.colorScheme.background,
+
+    Scaffold(backgroundColor = MaterialTheme.colorScheme.background,
         topBar = { AppBar(title = stringResource(id = R.string.HomeAppBarTitle)) },
 
         bottomBar = {
@@ -46,8 +46,7 @@ fun HomeScreen() {
                     )
                 )
             }
-        }
-    ) {
+        }) {
         Box(
             modifier = Modifier
                 .padding(it)
@@ -57,8 +56,12 @@ fun HomeScreen() {
             LazyColumn(
                 modifier = Modifier.background(MaterialTheme.colorScheme.background)
             ) {
-                items(viewModel.getAllZekirCategories()) { category ->
-                    CategoryItem(category = category)
+                items(zekirCategoryViewModel.getAllZekirCategories()) { category ->
+                    CategoryItem(
+                        category = category,
+                        navController = navController,
+                        zekirCategoryViewModel = zekirCategoryViewModel
+                    )
                 }
                 item {
                     Spacer(modifier = Modifier.padding(10.dp))
