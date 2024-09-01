@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.presentation.utils
+package com.fastlink.zekrapp.ui.utils
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth

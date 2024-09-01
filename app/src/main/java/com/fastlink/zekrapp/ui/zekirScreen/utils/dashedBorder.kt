@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.presentation.utils
+package com.fastlink.zekrapp.ui.zekirScreen.utils
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -15,7 +15,7 @@ fun Modifier.dashedBorder(
     brush: Brush,
     shape: Shape,
     strokeWidth: Dp = 2.dp,
-    dashlength: Dp = 4.dp,
+    dashLength: Dp = 4.dp,
     gapLength: Dp = 4.dp,
     cap: StrokeCap = StrokeCap.Round
 ) = this.drawWithContent {
@@ -29,7 +29,7 @@ fun Modifier.dashedBorder(
         cap = cap,
         width = strokeWidth.toPx(),
         pathEffect = PathEffect.dashPathEffect(
-            floatArrayOf(dashlength.toPx(), gapLength.toPx()),
+            floatArrayOf(dashLength.toPx(), gapLength.toPx()),
         )
     )
     drawContent()

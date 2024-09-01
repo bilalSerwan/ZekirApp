@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.presentation.navigation
+package com.fastlink.zekrapp.navigation
 
 sealed class Screen(val route: String) {
     data object Home : Screen("Home")

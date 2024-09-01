@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.presentation.utils.bottomAppBar
+package com.fastlink.zekrapp.ui.utils.bottomAppBar
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.fastlink.zekrapp.appData.model.ZekirCategoryModel
-import com.fastlink.zekrapp.presentation.navigation.Screen
+import com.fastlink.zekrapp.navigation.Screen
 
 data class BottomBarItem(
     val icon: ImageVector,
@@ -26,7 +26,6 @@ data class BottomBarItem(
     val selected: Boolean,
     val onClicked: () -> Unit
 )
-
 @Composable
 fun BottomBar(bottomBarItems: List<BottomBarItem>) {
     BottomAppBar(
@@ -79,7 +78,8 @@ fun getListOfBottomBarItems(
 ): List<BottomBarItem> {
 
     val bottomBarItems = listOf(
-        BottomBarItem(icon = Icons.Default.Home,
+        BottomBarItem(
+            icon = Icons.Default.Home,
             label = homeIconLabel,
             selected = navBackStackEntry.destination.route == Screen.Home.route,
             onClicked = {
@@ -87,7 +87,8 @@ fun getListOfBottomBarItems(
                     navController.navigate(Screen.Home.route)
                 }
             }),
-        BottomBarItem(icon = Icons.Default.Favorite,
+        BottomBarItem(
+            icon = Icons.Default.Favorite,
             label = favoriteIconLabel,
             selected = navBackStackEntry.destination.route == Screen.Favorite.route,
             onClicked = {

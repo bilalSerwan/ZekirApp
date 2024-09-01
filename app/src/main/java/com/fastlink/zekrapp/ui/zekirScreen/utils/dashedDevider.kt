@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.presentation.utils
+package com.fastlink.zekrapp.ui.zekirScreen.utils
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.Dp
 
 
 @Composable
-fun DashedDevider(
+fun DashedDivider(
     thickness: Dp,
     color: Color,
     phase: Float = 10f,

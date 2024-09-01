@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.presentation.utils.bottomAppBar
+package com.fastlink.zekrapp.ui.utils.bottomAppBar
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

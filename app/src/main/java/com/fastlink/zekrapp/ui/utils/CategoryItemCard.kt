@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.presentation.utils
+package com.fastlink.zekrapp.ui.utils
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,11 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.fastlink.zekrapp.appData.model.ZekirCategoryModel
-import com.fastlink.zekrapp.presentation.navigation.Screen
-import com.fastlink.zekrapp.viewModel.ZekirCategoryViewModel
+import com.fastlink.zekrapp.navigation.Screen
 
 @Composable
-fun CategoryItem(category: ZekirCategoryModel,navController: NavController,zekirCategoryViewModel: ZekirCategoryViewModel) {
+fun CategoryItem(
+    category: ZekirCategoryModel,
+    navController: NavController,
+    viewModel: ZekirCategoryViewModelInterface = hiltViewModel()
+) {
     Surface(
         modifier = Modifier
             .heightIn(min = 70.dp, max = 150.dp)
@@ -55,10 +58,13 @@ fun CategoryItem(category: ZekirCategoryModel,navController: NavController,zekir
                     .padding(start = 20.dp)
                     .size(25.dp)
                     .clickable {
-                        zekirCategoryViewModel.updateZekirCategory(category.id, !category.isFavorite)
+                        viewModel.updateZekirCategory(
+                            category.id,
+                            !category.isFavorite
+                        )
                     })
             Text(
-                text = category.categoryTitle,
+                text = category.zekirCategoryTitle,
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W400),
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier

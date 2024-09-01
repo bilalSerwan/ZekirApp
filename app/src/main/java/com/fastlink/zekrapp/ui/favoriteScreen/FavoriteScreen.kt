@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.presentation
+package com.fastlink.zekrapp.ui.favoriteScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,19 +23,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fastlink.zekrapp.R
-import com.fastlink.zekrapp.presentation.utils.CategoryItem
-import com.fastlink.zekrapp.presentation.utils.AppBar
-import com.fastlink.zekrapp.presentation.utils.bottomAppBar.BottomBar
-import com.fastlink.zekrapp.presentation.utils.bottomAppBar.getListOfBottomBarItems
-import com.fastlink.zekrapp.viewModel.ZekirCategoryViewModel
+import com.fastlink.zekrapp.ui.utils.CategoryItem
+import com.fastlink.zekrapp.ui.utils.AppBar
+import com.fastlink.zekrapp.ui.utils.bottomAppBar.BottomBar
+import com.fastlink.zekrapp.ui.utils.bottomAppBar.getListOfBottomBarItems
 
 @Composable
 fun FavoriteScreen(
     navController: NavController,
-    zekirCategoryViewModel: ZekirCategoryViewModel
+    favoriteScreenViewModel: FavoriteScreenViewModel = hiltViewModel(),
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
         topBar = { AppBar(title = stringResource(id = R.string.FavoriteAppBarTitle)) },
@@ -51,7 +49,6 @@ fun FavoriteScreen(
                 )
             }
         }
-
     ) {
         Box(
             modifier = Modifier
@@ -59,7 +56,7 @@ fun FavoriteScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center,
         ) {
-            if (zekirCategoryViewModel.getFavoriteZekirCategories().isEmpty()) {
+            if (favoriteScreenViewModel.getFavoriteZekirCategories().isEmpty()) {
                 Text(
                     text = "No Favorite Categories Yet",
                     modifier = Modifier.fillMaxWidth(),
@@ -74,11 +71,11 @@ fun FavoriteScreen(
                         .background(MaterialTheme.colorScheme.background),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    items(zekirCategoryViewModel.getFavoriteZekirCategories()) { category ->
+                    items(favoriteScreenViewModel.getFavoriteZekirCategories()) { category ->
                         CategoryItem(
                             category = category,
                             navController = navController,
-                            zekirCategoryViewModel = zekirCategoryViewModel
+                            viewModel = favoriteScreenViewModel
                         )
                     }
                     item {

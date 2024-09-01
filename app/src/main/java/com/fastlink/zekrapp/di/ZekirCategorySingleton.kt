@@ -1,10 +1,8 @@
-package com.fastlink.zekrapp.appData
+package com.fastlink.zekrapp.di
 
 import android.content.Context
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
 import com.fastlink.zekrapp.appData.model.ZekirCategoryModel
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -42,8 +40,8 @@ object ZekirCategorySingleton {
                     categories.add(
                         ZekirCategoryModel(
                             id = tokens[0].toInt(),
-                            categoryTitle = tokens[1],
-                            plainCategoryTitle = tokens[2]
+                            zekirCategoryTitle = tokens[1],
+                            plainZekirCategoryTitle = tokens[2]
                         )
                     )
                 }
