@@ -29,7 +29,7 @@ import com.fastlink.zekrapp.navigation.Screen
 
 @Composable
 fun CategoryItem(
-    category: ZekirCategoryModel,
+    zekirCategory: ZekirCategoryModel,
     navController: NavController,
     viewModel: ZekirCategoryViewModelInterface = hiltViewModel()
 ) {
@@ -44,13 +44,13 @@ fun CategoryItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    navController.navigate("${Screen.ZekirScreen.route}/${category.id}")
+                    navController.navigate("${Screen.ZekirScreen.route}/${zekirCategory.id}")
                 }
                 .padding(vertical = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(imageVector = if (category.isFavorite) Icons.Default.Favorite
+            Icon(imageVector = if (zekirCategory.isFavorite) Icons.Default.Favorite
             else Icons.Default.FavoriteBorder,
                 contentDescription = "Favorite",
                 tint = MaterialTheme.colorScheme.primary,
@@ -59,12 +59,12 @@ fun CategoryItem(
                     .size(25.dp)
                     .clickable {
                         viewModel.updateZekirCategory(
-                            category.id,
-                            !category.isFavorite
+                            zekirCategory.id,
+                            !zekirCategory.isFavorite
                         )
                     })
             Text(
-                text = category.zekirCategoryTitle,
+                text = zekirCategory.zekirCategoryTitle,
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W400),
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier

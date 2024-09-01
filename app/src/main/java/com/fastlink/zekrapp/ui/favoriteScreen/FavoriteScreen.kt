@@ -73,7 +73,7 @@ fun FavoriteScreen(
                 ) {
                     items(favoriteScreenViewModel.getFavoriteZekirCategories()) { category ->
                         CategoryItem(
-                            category = category,
+                            zekirCategory = category,
                             navController = navController,
                             viewModel = favoriteScreenViewModel
                         )

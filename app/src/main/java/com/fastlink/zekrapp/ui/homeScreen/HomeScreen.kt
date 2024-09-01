@@ -32,7 +32,6 @@ fun HomeScreen(
 
     Scaffold(backgroundColor = MaterialTheme.colorScheme.background,
         topBar = { AppBar(title = stringResource(id = R.string.HomeAppBarTitle)) },
-
         bottomBar = {
             navBackStackEntry?.let { entry ->
                 BottomBar(
@@ -54,9 +53,9 @@ fun HomeScreen(
             LazyColumn(
                 modifier = Modifier.background(MaterialTheme.colorScheme.background)
             ) {
-                items(homeScreenViewModel.getAllZekirCategories()) { category ->
+                items(homeScreenViewModel.getAllZekirCategories()) { zekirCategory ->
                     CategoryItem(
-                        category = category,
+                        zekirCategory = zekirCategory,
                         navController = navController,
                         viewModel = homeScreenViewModel
                     )
