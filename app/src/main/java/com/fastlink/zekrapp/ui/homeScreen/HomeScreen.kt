@@ -1,6 +1,5 @@
-package com.fastlink.zekrapp.presentation
+package com.fastlink.zekrapp.ui.homeScreen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -19,16 +18,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fastlink.zekrapp.R
-import com.fastlink.zekrapp.presentation.utils.CategoryItem
-import com.fastlink.zekrapp.presentation.utils.AppBar
-import com.fastlink.zekrapp.presentation.utils.bottomAppBar.BottomBar
-import com.fastlink.zekrapp.presentation.utils.bottomAppBar.getListOfBottomBarItems
-import com.fastlink.zekrapp.viewModel.ZekirCategoryViewModel
+import com.fastlink.zekrapp.ui.utils.CategoryItem
+import com.fastlink.zekrapp.ui.utils.AppBar
+import com.fastlink.zekrapp.ui.utils.bottomAppBar.BottomBar
+import com.fastlink.zekrapp.ui.utils.bottomAppBar.getListOfBottomBarItems
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    zekirCategoryViewModel: ZekirCategoryViewModel
+    homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -56,11 +54,11 @@ fun HomeScreen(
             LazyColumn(
                 modifier = Modifier.background(MaterialTheme.colorScheme.background)
             ) {
-                items(zekirCategoryViewModel.getAllZekirCategories()) { category ->
+                items(homeScreenViewModel.getAllZekirCategories()) { category ->
                     CategoryItem(
                         category = category,
                         navController = navController,
-                        zekirCategoryViewModel = zekirCategoryViewModel
+                        viewModel = homeScreenViewModel
                     )
                 }
                 item {

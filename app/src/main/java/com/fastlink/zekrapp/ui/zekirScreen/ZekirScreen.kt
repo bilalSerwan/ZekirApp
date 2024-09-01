@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.presentation
+package com.fastlink.zekrapp.ui.zekirScreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -25,42 +25,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.fastlink.zekrapp.presentation.utils.AppBar
-import com.fastlink.zekrapp.presentation.utils.CustomFloatingActionButton
-import com.fastlink.zekrapp.presentation.utils.CustomSnackBar
-import com.fastlink.zekrapp.presentation.utils.ZekirCard
-import com.fastlink.zekrapp.presentation.utils.bottomAppBar.BottomBar
-import com.fastlink.zekrapp.presentation.utils.bottomAppBar.getListOfBottomBarItemsInZekirScreen
-import com.fastlink.zekrapp.viewModel.ZekirCategoryViewModel
-import com.fastlink.zekrapp.viewModel.ZekirViewModel
+import com.fastlink.zekrapp.ui.utils.AppBar
+import com.fastlink.zekrapp.ui.zekirScreen.utils.CustomFloatingActionButton
+import com.fastlink.zekrapp.ui.zekirScreen.utils.CustomSnackBar
+import com.fastlink.zekrapp.ui.zekirScreen.utils.ZekirCard
+import com.fastlink.zekrapp.ui.utils.bottomAppBar.BottomBar
+import com.fastlink.zekrapp.ui.utils.bottomAppBar.getListOfBottomBarItemsInZekirScreen
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ZekirScreen(
-    categoryId: Int,
     navController: NavController,
-    zekirCategoryViewModel: ZekirCategoryViewModel,
-    zekirViewModel: ZekirViewModel,
+    zekirScreenViewModel: ZekirScreenViewModel = hiltViewModel(),
 ) {
     val snackBarState = remember { SnackbarHostState() }
     val pagerState = rememberPagerState(
-        pageCount = { zekirViewModel.zekirs.size },
+        pageCount = { zekirScreenViewModel.zekirs.size },
     )
     val scaffoldState = rememberScaffoldState()
     val clipboardManager = LocalClipboardManager.current
-    val zekirCategory = zekirCategoryViewModel.getZekirCategoryById(categoryId)
+    val zekirCategory = zekirScreenViewModel.zekirCategory.value!!
 
     LaunchedEffect(key1 = pagerState.currentPage) {
-        zekirViewModel.resetZekirCounter()
-        snackBarState.showSnackbar(message = "الذکر ${pagerState.currentPage + 1} من ${zekirViewModel.zekirs.size}")
+        zekirScreenViewModel.resetZekirCounter()
+        snackBarState.showSnackbar(message = "الذکر ${pagerState.currentPage + 1} من ${zekirScreenViewModel.zekirs.size}")
     }
     Scaffold(scaffoldState = scaffoldState,
         backgroundColor = MaterialTheme.colorScheme.background,
         topBar = {
             AppBar(
-                title = zekirCategory.categoryTitle,
+                title = zekirCategory.zekirCategoryTitle,
                 actions = {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
@@ -77,7 +74,7 @@ fun ZekirScreen(
         },
         floatingActionButton = {
             CustomFloatingActionButton(
-                viewModel = zekirViewModel,
+                viewModel = zekirScreenViewModel,
                 pagerState = pagerState,
             )
         },
@@ -87,10 +84,10 @@ fun ZekirScreen(
             BottomBar(
                 bottomBarItems = getListOfBottomBarItemsInZekirScreen(zekirCategory = zekirCategory,
                     onCopyIconClicked = {
-                        clipboardManager.setText(AnnotatedString(zekirViewModel.zekirs[pagerState.currentPage].zekirTitle))
+                        clipboardManager.setText(AnnotatedString(zekirScreenViewModel.zekirs[pagerState.currentPage].zekirTitle))
                     },
                     onFavoriteIconClicked = {
-                        zekirCategoryViewModel.updateZekirCategory(
+                        zekirScreenViewModel.updateZekirCategory(
                             categoryId = zekirCategory.id, isFavorite = !zekirCategory.isFavorite
                         )
                     })
@@ -103,7 +100,7 @@ fun ZekirScreen(
                 .padding(innerPadding),
             reverseLayout = true
         ) {
-            ZekirCard(pagerState = pagerState, viewModel = zekirViewModel)
+            ZekirCard(pagerState = pagerState, viewModel = zekirScreenViewModel)
         }
         Box(
             contentAlignment = Alignment.Center,

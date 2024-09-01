@@ -1,4 +1,4 @@
-package com.fastlink.zekrapp.presentation.utils
+package com.fastlink.zekrapp.ui.zekirScreen.utils
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -24,12 +24,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fastlink.zekrapp.R
-import com.fastlink.zekrapp.viewModel.ZekirViewModel
+import com.fastlink.zekrapp.ui.zekirScreen.ZekirScreenViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ZekirCard(pagerState: PagerState, viewModel: ZekirViewModel) {
+fun ZekirCard(pagerState: PagerState, viewModel: ZekirScreenViewModel) {
     val coroutineScope = rememberCoroutineScope()
 
     Column(
@@ -80,7 +80,7 @@ fun ZekirCard(pagerState: PagerState, viewModel: ZekirViewModel) {
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.bodyMedium
         )
-        DashedDevider(
+        DashedDivider(
             thickness = 1.1.dp,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
