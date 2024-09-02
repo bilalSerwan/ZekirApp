@@ -47,7 +47,7 @@ fun ZekirScreen(
     )
     val scaffoldState = rememberScaffoldState()
     val clipboardManager = LocalClipboardManager.current
-    val zekirCategory = zekirScreenViewModel.zekirCategory.value!!
+    val zekirCategory = zekirScreenViewModel.zekirCategory.value
 
     LaunchedEffect(key1 = pagerState.currentPage) {
         zekirScreenViewModel.resetZekirCounter()

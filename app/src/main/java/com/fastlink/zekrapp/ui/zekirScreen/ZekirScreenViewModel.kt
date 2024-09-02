@@ -17,15 +17,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ZekirScreenViewModel @Inject constructor(
-    private val zekirSingleton: ZekirSingleton,
-    private val zekirCategorySingleton: ZekirCategorySingleton,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
     val zekirCounter = mutableIntStateOf(0)
     var zekirs: List<ZekirModel> = emptyList()
         private set
-    var zekirCategory: MutableState<ZekirCategoryModel?> = mutableStateOf(null)
+    var zekirCategory: MutableState<ZekirCategoryModel> =
+        mutableStateOf(ZekirCategoryModel())
         private set
 
     init {
@@ -35,16 +33,16 @@ class ZekirScreenViewModel @Inject constructor(
     }
 
     private fun getZekirCategoryById(categoryId: Int) =
-        zekirCategorySingleton.getCategoryById(categoryId)
+        ZekirCategorySingleton.getCategoryById(categoryId)
 
     fun updateZekirCategory(categoryId: Int, isFavorite: Boolean) {
-        zekirCategory.value = zekirCategory.value?.copy(isFavorite = isFavorite)
-        zekirCategorySingleton.updateCategory(categoryId, isFavorite)
+        zekirCategory.value = zekirCategory.value.copy(isFavorite = isFavorite)
+        ZekirCategorySingleton.updateCategory(categoryId, isFavorite)
     }
 
     private fun getZekirsByCategoryIdAndResetZekirCounter(categoryId: Int) {
         resetZekirCounter()
-        zekirs = zekirSingleton.getZekirsByCategoryId(categoryId = categoryId)
+        zekirs = ZekirSingleton.getZekirsByCategoryId(categoryId = categoryId)
     }
 
     fun resetZekirCounter() {
