@@ -75,7 +75,7 @@ fun FavoriteScreen(
                         ZekirCategoryCard(
                             zekirCategory = zekirCategory,
                             navController = navController,
-                            onClicked = {
+                            onFavoriteIconClicked = {
                                 favoriteScreenViewModel.updateZekirCategory(
                                     zekirCategory.id,
                                     !zekirCategory.isFavorite

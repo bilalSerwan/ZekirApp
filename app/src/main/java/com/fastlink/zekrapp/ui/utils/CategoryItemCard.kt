@@ -30,7 +30,7 @@ import com.fastlink.zekrapp.navigation.Screen
 fun ZekirCategoryCard(
     zekirCategory: ZekirCategoryModel,
     navController: NavController,
-    onClicked: () -> Unit
+    onFavoriteIconClicked: () -> Unit
     ) {
     Surface(
         modifier = Modifier
@@ -57,7 +57,7 @@ fun ZekirCategoryCard(
                     .padding(start = 20.dp)
                     .size(25.dp)
                     .clickable {
-                      onClicked()
+                      onFavoriteIconClicked()
                     })
             Text(
                 text = zekirCategory.zekirCategoryTitle,
