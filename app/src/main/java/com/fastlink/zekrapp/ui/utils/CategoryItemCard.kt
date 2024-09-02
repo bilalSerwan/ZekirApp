@@ -28,11 +28,11 @@ import com.fastlink.zekrapp.appData.model.ZekirCategoryModel
 import com.fastlink.zekrapp.navigation.Screen
 
 @Composable
-fun CategoryItem(
+fun ZekirCategoryCard(
     zekirCategory: ZekirCategoryModel,
     navController: NavController,
-    viewModel: ZekirCategoryViewModelInterface = hiltViewModel()
-) {
+    onClicked: () -> Unit
+    ) {
     Surface(
         modifier = Modifier
             .heightIn(min = 70.dp, max = 150.dp)
@@ -58,10 +58,7 @@ fun CategoryItem(
                     .padding(start = 20.dp)
                     .size(25.dp)
                     .clickable {
-                        viewModel.updateZekirCategory(
-                            zekirCategory.id,
-                            !zekirCategory.isFavorite
-                        )
+                      onClicked()
                     })
             Text(
                 text = zekirCategory.zekirCategoryTitle,

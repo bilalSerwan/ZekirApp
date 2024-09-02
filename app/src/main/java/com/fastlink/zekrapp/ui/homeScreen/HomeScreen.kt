@@ -18,8 +18,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fastlink.zekrapp.R
-import com.fastlink.zekrapp.ui.utils.CategoryItem
 import com.fastlink.zekrapp.ui.utils.AppBar
+import com.fastlink.zekrapp.ui.utils.ZekirCategoryCard
 import com.fastlink.zekrapp.ui.utils.bottomAppBar.BottomBar
 import com.fastlink.zekrapp.ui.utils.bottomAppBar.getListOfBottomBarItems
 
@@ -54,10 +54,15 @@ fun HomeScreen(
                 modifier = Modifier.background(MaterialTheme.colorScheme.background)
             ) {
                 items(homeScreenViewModel.getAllZekirCategories()) { zekirCategory ->
-                    CategoryItem(
+                    ZekirCategoryCard(
                         zekirCategory = zekirCategory,
                         navController = navController,
-                        viewModel = homeScreenViewModel
+                        onClicked = {
+                            homeScreenViewModel.updateZekirCategory(
+                                zekirCategory.id,
+                                !zekirCategory.isFavorite
+                            )
+                        }
                     )
                 }
                 item {

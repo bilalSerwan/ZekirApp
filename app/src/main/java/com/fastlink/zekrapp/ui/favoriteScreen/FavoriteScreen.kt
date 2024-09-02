@@ -23,8 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fastlink.zekrapp.R
-import com.fastlink.zekrapp.ui.utils.CategoryItem
 import com.fastlink.zekrapp.ui.utils.AppBar
+import com.fastlink.zekrapp.ui.utils.ZekirCategoryCard
 import com.fastlink.zekrapp.ui.utils.bottomAppBar.BottomBar
 import com.fastlink.zekrapp.ui.utils.bottomAppBar.getListOfBottomBarItems
 
@@ -71,11 +71,16 @@ fun FavoriteScreen(
                         .background(MaterialTheme.colorScheme.background),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    items(favoriteScreenViewModel.getFavoriteZekirCategories()) { category ->
-                        CategoryItem(
-                            zekirCategory = category,
+                    items(favoriteScreenViewModel.getFavoriteZekirCategories()) { zekirCategory ->
+                        ZekirCategoryCard(
+                            zekirCategory = zekirCategory,
                             navController = navController,
-                            viewModel = favoriteScreenViewModel
+                            onClicked = {
+                                favoriteScreenViewModel.updateZekirCategory(
+                                    zekirCategory.id,
+                                    !zekirCategory.isFavorite
+                                )
+                            }
                         )
                     }
                     item {
