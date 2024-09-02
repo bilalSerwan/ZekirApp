@@ -2,7 +2,6 @@ package com.fastlink.zekrapp.di
 
 import com.fastlink.zekrapp.appData.model.ZekirModel
 import com.fastlink.zekrapp.appData.zekirData
-import javax.inject.Singleton
 
 object ZekirSingleton {
     private val _zekirs = mutableListOf<ZekirModel>()

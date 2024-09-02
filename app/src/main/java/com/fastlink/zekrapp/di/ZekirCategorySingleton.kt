@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import com.fastlink.zekrapp.appData.model.ZekirCategoryModel
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import javax.inject.Singleton
 
 
 object ZekirCategorySingleton {
