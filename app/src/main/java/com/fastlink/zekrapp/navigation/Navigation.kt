@@ -11,10 +11,10 @@ import com.fastlink.zekrapp.ui.zekirScreen.ZekirScreen
 
 @Composable
 fun Navigation(
-    navController: NavController,
+    navController: NavHostController,
 ) {
     NavHost(
-        navController = navController as NavHostController,
+        navController = navController ,
         startDestination = Screen.Home.route
     ) {
         composable(Screen.Home.route) {
