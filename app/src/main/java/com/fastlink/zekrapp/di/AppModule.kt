@@ -12,15 +12,6 @@ import dagger.hilt.components.SingletonComponent
 object AppModule {
 
     @Provides
-    fun provideZekirCategorySingleton(): ZekirCategorySingleton {
-        return ZekirCategorySingleton
-    }
-
-    @Provides
-    fun provideZekirSingleton(): ZekirSingleton {
-        return ZekirSingleton
-    }
-    @Provides
     fun provideContext(@ApplicationContext context: Context): Context {
         return context
     }

@@ -8,7 +8,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import javax.inject.Singleton
 
-@Singleton
+
 object ZekirCategorySingleton {
     private val _zekirCategoriesData = mutableStateOf<List<ZekirCategoryModel>>(emptyList())
     val zekirCategoriesData: State<List<ZekirCategoryModel>>
