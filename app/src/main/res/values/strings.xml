@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ZekrApp</string>
+    <string name="emptyFavoritesMessage">No Favorite Categories Yet</string>
+    <string name="readOnceInArabic">مرة واحدة</string>
+    <string name="Home">Home</string>
+    <string name="Favorite">Favorite</string>
+    <string name="HomeAppBarTitle">Home Screen</string>
+    <string name="FavoriteAppBarTitle">Favorite Screen</string>
+</resources>
