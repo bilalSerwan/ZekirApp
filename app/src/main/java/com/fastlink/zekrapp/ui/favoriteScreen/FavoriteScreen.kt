@@ -71,7 +71,9 @@ fun FavoriteScreen(
                         .background(MaterialTheme.colorScheme.background),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    items(favoriteScreenViewModel.getFavoriteZekirCategories()) { zekirCategory ->
+                    items(favoriteScreenViewModel.getFavoriteZekirCategories(), key = {
+                        it.id
+                    }) { zekirCategory ->
                         ZekirCategoryCard(
                             zekirCategory = zekirCategory,
                             navController = navController,

@@ -1,6 +1,6 @@
 [versions]
 accompanistPagerIndicators = "0.30.1"
-agp = "8.4.2"
+agp = "8.7.2"
 foundation = "1.6.8"
 hiltAndroid = "2.49"
 hiltAndroidCompiler = "2.44"

@@ -1,5 +1,6 @@
 package com.fastlink.zekrapp.ui.zekirScreen
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -7,9 +8,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fastlink.zekrapp.appData.model.ZekirCategoryModel
-import com.fastlink.zekrapp.di.ZekirSingleton
 import com.fastlink.zekrapp.appData.model.ZekirModel
 import com.fastlink.zekrapp.di.ZekirCategorySingleton
+import com.fastlink.zekrapp.di.ZekirSingleton
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -45,8 +46,12 @@ class ZekirScreenViewModel @Inject constructor(
         zekirs = ZekirSingleton.getZekirsByCategoryId(categoryId = categoryId)
     }
 
-    fun resetZekirCounter() {
-        zekirCounter.intValue = 0
+    fun resetZekirCounter(zekirNumber: Int? = null) {
+        if (zekirNumber == null) {
+            zekirCounter.intValue = 0
+        } else {
+            zekirCounter.intValue = zekirs[zekirNumber].counter
+        }
     }
 
     fun isCardButtonEnabled(zekirNumber: Int): Boolean {
@@ -62,6 +67,7 @@ class ZekirScreenViewModel @Inject constructor(
     private suspend fun incrementZekirCounter(zekirNumber: Int) {
         if (zekirCounter.intValue < zekirs[zekirNumber].numericCounter) {
             zekirCounter.intValue++
+            zekirs[zekirNumber].counter++
             viewModelScope.launch {
                 delay(1000)
             }.join()

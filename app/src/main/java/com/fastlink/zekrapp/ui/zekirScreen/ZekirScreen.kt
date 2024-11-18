@@ -28,11 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.fastlink.zekrapp.ui.utils.AppBar
+import com.fastlink.zekrapp.ui.utils.bottomAppBar.BottomBar
+import com.fastlink.zekrapp.ui.utils.bottomAppBar.getListOfBottomBarItemsInZekirScreen
 import com.fastlink.zekrapp.ui.zekirScreen.utils.CustomFloatingActionButton
 import com.fastlink.zekrapp.ui.zekirScreen.utils.CustomSnackBar
 import com.fastlink.zekrapp.ui.zekirScreen.utils.ZekirCard
-import com.fastlink.zekrapp.ui.utils.bottomAppBar.BottomBar
-import com.fastlink.zekrapp.ui.utils.bottomAppBar.getListOfBottomBarItemsInZekirScreen
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -50,7 +50,7 @@ fun ZekirScreen(
     val zekirCategory = zekirScreenViewModel.zekirCategory.value
 
     LaunchedEffect(key1 = pagerState.currentPage) {
-        zekirScreenViewModel.resetZekirCounter()
+        zekirScreenViewModel.resetZekirCounter(pagerState.currentPage)
         snackBarState.showSnackbar(message = "الذکر ${pagerState.currentPage + 1} من ${zekirScreenViewModel.zekirs.size}")
     }
     Scaffold(scaffoldState = scaffoldState,
@@ -110,7 +110,7 @@ fun ZekirScreen(
         ) {
             SnackbarHost(hostState = snackBarState) {
                 snackBarState.currentSnackbarData?.visuals?.message?.let {
-                    CustomSnackBar(it)
+                    CustomSnackBar(it, modifier = Modifier.padding(innerPadding))
                 }
             }
         }

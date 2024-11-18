@@ -53,7 +53,9 @@ fun HomeScreen(
             LazyColumn(
                 modifier = Modifier.background(MaterialTheme.colorScheme.background)
             ) {
-                items(homeScreenViewModel.getAllZekirCategories()) { zekirCategory ->
+                items(
+                    homeScreenViewModel.getAllZekirCategories(),
+                    key = { it.id }) { zekirCategory ->
                     ZekirCategoryCard(
                         zekirCategory = zekirCategory,
                         navController = navController,

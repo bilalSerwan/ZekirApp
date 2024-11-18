@@ -5,7 +5,13 @@ import com.fastlink.zekrapp.appData.zekirData
 
 object ZekirSingleton {
     private val _zekirs = mutableListOf<ZekirModel>()
-    fun getZekirsByCategoryId(categoryId: Int) = _zekirs.filter { it.categoryId == categoryId }
+    fun getZekirsByCategoryId(categoryId: Int): List<ZekirModel> {
+        var zekirs = _zekirs.filter { it.categoryId == categoryId }
+        zekirs = zekirs.map { zekir ->
+            zekir.copy(counter = 0)
+        }
+        return zekirs
+    }
 
     init {
         addZekrs()
@@ -13,7 +19,7 @@ object ZekirSingleton {
 
     private fun addZekrs() {
         for (i in zekirData) {
-            _zekirs.add(i)
+            _zekirs.add(i.copy(counter = 0))
         }
     }
 }
